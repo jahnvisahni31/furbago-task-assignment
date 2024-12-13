@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-"use client"
+"use client";
 import Sidebar from './components/Sidebar';
 import { siteData } from './components/index'; // Assuming siteData is an array of all the data
 import SiteCard from './components/SiteCard';
@@ -7,10 +7,16 @@ import { useState } from 'react';
 
 export default function Home() {
   const [filteredData, setFilteredData] = useState(siteData); // State for filtered data
+  const [viewMode, setViewMode] = useState<'kanban' | 'list' | 'Table'>('kanban'); // Default view is 'kanban'
 
   // Function to update the filtered data based on Sidebar filters
   const updateFilteredData = (newFilteredData: any[]) => {
     setFilteredData(newFilteredData);
+  };
+
+  // Function to toggle between List and Kanban views
+  const handleViewChange = (mode: 'kanban' | 'list' | 'Table') => {
+    setViewMode(mode); // Update the view mode
   };
 
   return (
@@ -60,7 +66,10 @@ export default function Home() {
             <div className="flex items-center gap-4 flex-wrap">
               <h1 className="text-xl font-semibold">Sites</h1>
               <div className="flex border rounded-md overflow-hidden">
-                <button className="px-2 py-1 border-r">
+                <button
+                  className={`px-2 py-1 border-r ${viewMode === 'list' ? 'bg-gray-100' : ''}`}
+                  onClick={() => handleViewChange('list')}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -77,7 +86,10 @@ export default function Home() {
                   </svg>
                   List
                 </button>
-                <button className="px-2 py-1 border-r bg-gray-100">
+                <button
+                  className={`px-2 py-1 border-r ${viewMode === 'kanban' ? 'bg-gray-100' : ''}`}
+                  onClick={() => handleViewChange('kanban')}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -94,7 +106,10 @@ export default function Home() {
                   </svg>
                   Kanban
                 </button>
-                <button className="px-2 py-1">
+                <button
+                  className={`px-2 py-1 border-r ${viewMode === 'Table' ? 'bg-gray-100' : ''}`}
+                  onClick={() => handleViewChange('Table')}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
