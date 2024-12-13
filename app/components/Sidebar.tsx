@@ -11,6 +11,7 @@ export default function Sidebar({ updateFilteredData }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLocations, setSelectedLocations] = useState<string[]>([]); // Start with no location selected
   const [selectedDurations, setSelectedDurations] = useState<string[]>([]); // Start with no duration selected
+  const [priceRange, setPriceRange] = useState<[number, number]>([10, 100]); // Default price range
 
   const handleLocationChange = (location: string) => {
     setSelectedLocations((prevSelected) =>
@@ -28,28 +29,38 @@ export default function Sidebar({ updateFilteredData }: SidebarProps) {
     );
   };
 
-  const resetFilters = () => {
-    setSelectedLocations([]); // Reset location filter
-    setSelectedDurations([]); // Reset duration filter
-  };
-
-  const applyFilters = () => {
-    // If no filter is selected, show all data
-    if (selectedLocations.length === 0 && selectedDurations.length === 0) {
-      updateFilteredData(siteData);
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.valueAsNumber;
+    if (e.target.name === 'minPrice') {
+      setPriceRange([value, priceRange[1]]);
     } else {
-      const filtered = siteData.filter(
-        (item) =>
-          (selectedLocations.length === 0 || selectedLocations.includes(item.location)) &&
-          (selectedDurations.length === 0 || selectedDurations.includes(item.duration))
-      );
-      updateFilteredData(filtered);
+      setPriceRange([priceRange[0], value]);
     }
   };
 
+  const resetFilters = () => {
+    setSelectedLocations([]); // Reset location filter
+    setSelectedDurations([]); // Reset duration filter
+    setPriceRange([10, 100]); // Reset price filter
+  };
+
+  const applyFilters = () => {
+    const filtered = siteData.filter((item) => {
+      const matchesLocation =
+        selectedLocations.length === 0 || selectedLocations.includes(item.location);
+      const matchesDuration =
+        selectedDurations.length === 0 || selectedDurations.includes(item.duration);
+      const matchesPrice =
+        item.price >= priceRange[0] && item.price <= priceRange[1];
+
+      return matchesLocation && matchesDuration && matchesPrice;
+    });
+    updateFilteredData(filtered);
+  };
+
   useEffect(() => {
-    applyFilters(); // Apply filters whenever selected locations or durations change
-  }, [selectedLocations, selectedDurations]);
+    applyFilters(); // Apply filters whenever selected locations, durations, or price range change
+  }, [selectedLocations, selectedDurations, priceRange]);
 
   return (
     <div className="lg:w-64 flex-shrink-0">
@@ -74,7 +85,6 @@ export default function Sidebar({ updateFilteredData }: SidebarProps) {
             Reset All
           </button>
         </div>
-        
 
         <div className="space-y-6 text-black">
           {/* Location Section */}
@@ -102,16 +112,47 @@ export default function Sidebar({ updateFilteredData }: SidebarProps) {
               <div className="flex gap-2">
                 <div className="flex-1">
                   <label className="text-xs text-gray-500 md:text-sm">From:</label>
-                  <div className="border rounded px-2 py-1 text-sm">$10</div>
+                  <input
+                    type="number"
+                    name="minPrice"
+                    className="border rounded px-2 py-1 text-sm w-full"
+                    value={priceRange[0]}
+                    onChange={handlePriceChange}
+                    min="0"
+                  />
                 </div>
                 <div className="flex-1">
                   <label className="text-xs text-gray-500 md:text-sm">To:</label>
-                  <div className="border rounded px-2 py-1 text-sm">$100</div>
+                  <input
+                    type="number"
+                    name="maxPrice"
+                    className="border rounded px-2 py-1 text-sm w-full"
+                    value={priceRange[1]}
+                    onChange={handlePriceChange}
+                    min="0"
+                  />
                 </div>
               </div>
-              <input type="range" className="w-full" />
+              <input
+                type="range"
+                className="w-full"
+                min="0"
+                max="500"
+                value={priceRange[0]}
+                onChange={handlePriceChange}
+                name="minPrice"
+              />
+              <input
+                type="range"
+                className="w-full"
+                min="0"
+                max="500"
+                value={priceRange[1]}
+                onChange={handlePriceChange}
+                name="maxPrice"
+              />
             </div>
-          </div>    
+          </div>
 
           {/* Duration Section */}
           <div>
