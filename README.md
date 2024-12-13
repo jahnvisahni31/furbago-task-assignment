@@ -1,36 +1,103 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Travel Dashboard
 
-## Getting Started
+## Overview
 
-First, run the development server:
+Travel Dashboard is a modern, responsive web application built with Next.js and Tailwind CSS. The app allows users to explore and filter travel sites based on price, location, and duration, providing an intuitive interface for discovering travel opportunities.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Author
+
+[Jahnvi Sahni](https://github.com/jahnvisahni31)
+
+## Features
+
+- **Sidebar Filters**: Easily filter travel sites by:
+  - Price range
+  - Location
+  - Duration
+
+- **Comprehensive Site Cards**: Each travel site is displayed with:
+  - Title
+  - Image
+  - Location details
+  - Trip duration
+  - Pricing information
+
+- **Responsive Design**: Fully responsive layout that works seamlessly across all devices
+
+## Project Structure
+
+```
+travel-dashboard/
+│
+├── app/
+│   └── page.tsx             # Main entry point for the app's UI
+│
+├── components/
+│   ├── Sidebar.tsx          # Sidebar component for filters
+│   └── SiteCard.tsx         # Card component to display travel site details
+│
+├── public/
+│   └── images/              # Images used for cards or other assets
+│
+├── styles/
+│   └── globals.css          # Tailwind and global styles
+│
+├── tailwind.config.js       # Tailwind CSS configuration
+├── postcss.config.js        # PostCSS configuration
+├── package.json             # Project dependencies
+├── tsconfig.json            # TypeScript configuration
+├── next.config.js           # Next.js configuration
+└── README.md                # Project documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js (version 16 or higher)
+- npm or yarn
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Setup and Installation
 
-## Learn More
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jahnvisahni31/furbago-task-assignment.git
+   cd furbago-task-assignment
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+2. Install dependencies:
+   ```bash
+   npm install
+   # OR
+   yarn install
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Run the development server:
+   ```bash
+   npm run dev
+   # OR
+   yarn dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Open your browser and navigate to:
+   ```
+   http://localhost:3000
+   ```
 
-## Deploy on Vercel
+## Technologies Used
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- PostCSS
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Customization
+
+Feel free to modify the components, add more filters, or expand the functionality to suit your specific travel dashboard needs.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Contact
+
+For any inquiries or support, please contact the author: [Jahnvi Sahni](https://github.com/jahnvisahni31)
