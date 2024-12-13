@@ -1,8 +1,55 @@
-"use client"
-import { useState } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
+import { useState, useEffect } from 'react';
+import { siteData } from './index';
 
-export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false); // State for sidebar visibility on small screens
+interface SidebarProps {
+  updateFilteredData: (filteredData: any[]) => void;
+}
+
+export default function Sidebar({ updateFilteredData }: SidebarProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedLocations, setSelectedLocations] = useState<string[]>([]); // Start with no location selected
+  const [selectedDurations, setSelectedDurations] = useState<string[]>([]); // Start with no duration selected
+
+  const handleLocationChange = (location: string) => {
+    setSelectedLocations((prevSelected) =>
+      prevSelected.includes(location)
+        ? prevSelected.filter((loc) => loc !== location)
+        : [...prevSelected, location]
+    );
+  };
+
+  const handleDurationChange = (duration: string) => {
+    setSelectedDurations((prevSelected) =>
+      prevSelected.includes(duration)
+        ? prevSelected.filter((dur) => dur !== duration)
+        : [...prevSelected, duration]
+    );
+  };
+
+  const resetFilters = () => {
+    setSelectedLocations([]); // Reset location filter
+    setSelectedDurations([]); // Reset duration filter
+  };
+
+  const applyFilters = () => {
+    // If no filter is selected, show all data
+    if (selectedLocations.length === 0 && selectedDurations.length === 0) {
+      updateFilteredData(siteData);
+    } else {
+      const filtered = siteData.filter(
+        (item) =>
+          (selectedLocations.length === 0 || selectedLocations.includes(item.location)) &&
+          (selectedDurations.length === 0 || selectedDurations.includes(item.duration))
+      );
+      updateFilteredData(filtered);
+    }
+  };
+
+  useEffect(() => {
+    applyFilters(); // Apply filters whenever selected locations or durations change
+  }, [selectedLocations, selectedDurations]);
 
   return (
     <div className="lg:w-64 flex-shrink-0">
@@ -23,8 +70,11 @@ export default function Sidebar() {
         {/* Price Section */}
         <div className="flex items-center justify-between mb-4">
           <h2 className="font-medium text-black text-sm md:text-base">Price</h2>
-          <button className="text-black text-sm md:text-base">Reset All</button>
+          <button className="text-fuchsia-500 text-sm md:text-base" onClick={resetFilters}>
+            Reset All
+          </button>
         </div>
+        
 
         <div className="space-y-6 text-black">
           {/* Location Section */}
@@ -36,9 +86,10 @@ export default function Sidebar() {
                   <input
                     type="checkbox"
                     className="rounded text-black w-4 h-4"
-                    defaultChecked={idx < 2}
+                    checked={selectedLocations.includes(location)}
+                    onChange={() => handleLocationChange(location)}
                   />
-                  <span className="text-sm md:text-base">{location}</span>
+                  {location}
                 </label>
               ))}
             </div>
@@ -60,20 +111,21 @@ export default function Sidebar() {
               </div>
               <input type="range" className="w-full" />
             </div>
-          </div>
+          </div>    
 
           {/* Duration Section */}
           <div>
-            <h3 className="font-medium mb-4 text-sm md:text-base">Durations</h3>
+            <h3 className="font-medium mb-4 text-black text-sm md:text-base">Duration</h3>
             <div className="space-y-2">
-              {['1h', '2h', '3h', '4h'].map((duration, idx) => (
+              {['1h', '2h', '3h'].map((duration, idx) => (
                 <label key={idx} className="flex items-center gap-2">
                   <input
                     type="checkbox"
                     className="rounded text-black w-4 h-4"
-                    defaultChecked={idx < 2}
+                    checked={selectedDurations.includes(duration)}
+                    onChange={() => handleDurationChange(duration)}
                   />
-                  <span className="text-sm md:text-base">{duration}</span>
+                  {duration}
                 </label>
               ))}
             </div>

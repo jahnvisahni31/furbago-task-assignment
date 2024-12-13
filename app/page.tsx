@@ -1,14 +1,23 @@
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client"
 import Sidebar from './components/Sidebar';
-import { siteData } from './index';
+import { siteData } from './components/index'; // Assuming siteData is an array of all the data
 import SiteCard from './components/SiteCard';
+import { useState } from 'react';
 
 export default function Home() {
+  const [filteredData, setFilteredData] = useState(siteData); // State for filtered data
+
+  // Function to update the filtered data based on Sidebar filters
+  const updateFilteredData = (newFilteredData: any[]) => {
+    setFilteredData(newFilteredData);
+  };
+
   return (
     <div className="min-h-screen bg-white text-black">
-      {/* Navigation */}
       <header className="border-b">
         <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+          {/* Navigation */}
           <div className="flex items-center gap-4 sm:gap-8">
             <button className="text-fuchsia-600">
               <svg
@@ -42,7 +51,7 @@ export default function Home() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col lg:flex-row gap-8">
         {/* Sidebar */}
-        <Sidebar />
+        <Sidebar updateFilteredData={updateFilteredData} /> {/* Passing updateFilteredData */}
 
         {/* Main Content */}
         <div className="flex-1">
@@ -113,23 +122,28 @@ export default function Home() {
                 </button>
               </div>
             </div>
+            {/* Sort and Filter Buttons */}
           </div>
 
           {/* Grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-            {siteData.map((site, index) => (
-              <SiteCard
-                key={index}
-                title={site.title}
-                image={site.image}
-                location={site.location}
-                duration={site.duration}
-                price={site.price}
-                rating={site.rating}
-                sector={site.sector}
-                points={site.points}
-              />
-            ))}
+            {filteredData.length === 0 ? (
+              <p>No results found</p>
+            ) : (
+              filteredData.map((site, index) => (
+                <SiteCard
+                  key={index}
+                  title={site.title}
+                  image={site.image}
+                  location={site.location}
+                  duration={site.duration}
+                  price={site.price}
+                  rating={site.rating}
+                  sector={site.sector}
+                  points={site.points}
+                />
+              ))
+            )}
           </div>
         </div>
       </div>

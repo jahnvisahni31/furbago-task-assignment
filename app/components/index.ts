@@ -7,7 +7,6 @@ export const siteData = [
         sector: "Localized Sector",
         rating: 4.8,
         price: 45,
-
     },
     {
         image: "/assets/image2.png",
@@ -17,7 +16,6 @@ export const siteData = [
         sector: "Localized Best",
         rating: 4.8,
         price: 20.5,
-        
     },
     {
         image: "/assets/image3.png",
